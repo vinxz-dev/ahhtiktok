@@ -1,0 +1,1313 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vnxz TikTok Downloader</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+html{
+scroll-behavior:smooth;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#020617;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+position:relative;
+}
+
+/* BACKGROUND */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+background-size:40px 40px;
+z-index:-3;
+}
+
+.bg{
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left,#8b5cf640,transparent 35%),
+radial-gradient(circle at bottom right,#06b6d440,transparent 35%),
+linear-gradient(to bottom,#020617,#000);
+z-index:-2;
+}
+
+.blur{
+position:fixed;
+width:350px;
+height:350px;
+background:#8b5cf6;
+filter:blur(140px);
+opacity:.18;
+border-radius:50%;
+top:-100px;
+left:-100px;
+animation:move 8s infinite alternate;
+z-index:-1;
+}
+
+.blur2{
+position:fixed;
+width:350px;
+height:350px;
+background:#06b6d4;
+filter:blur(140px);
+opacity:.18;
+border-radius:50%;
+bottom:-100px;
+right:-100px;
+animation:move2 8s infinite alternate;
+z-index:-1;
+}
+
+@keyframes move{
+100%{
+transform:translate(100px,70px);
+}
+}
+
+@keyframes move2{
+100%{
+transform:translate(-100px,-70px);
+}
+}
+
+/* NAVBAR */
+.nav{
+position:sticky;
+top:0;
+z-index:999;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:16px;
+background:rgba(15,23,42,.75);
+backdrop-filter:blur(15px);
+border-bottom:1px solid #ffffff10;
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+}
+
+.logo span{
+background:linear-gradient(135deg,#8b5cf6,#06b6d4,#22c55e);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.menu-btn{
+position:absolute;
+right:20px;
+width:48px;
+height:48px;
+border:none;
+border-radius:16px;
+background:rgba(255,255,255,.05);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:5px;
+cursor:pointer;
+border:1px solid #ffffff10;
+}
+
+.menu-btn span{
+width:20px;
+height:2px;
+background:white;
+border-radius:10px;
+}
+
+/* OVERLAY */
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:none;
+z-index:998;
+}
+
+.overlay.active{
+display:block;
+}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+top:0;
+right:-360px;
+width:340px;
+height:100%;
+background:rgba(10,15,25,.96);
+backdrop-filter:blur(20px);
+padding:20px;
+overflow-y:auto;
+transition:.4s;
+z-index:999;
+border-left:1px solid #ffffff10;
+}
+
+.sidebar.active{
+right:0;
+}
+
+/* PROFILE */
+.profile{
+padding:40px 20px 30px;
+border-radius:24px;
+background:rgba(255,255,255,.05);
+border:1px solid #ffffff10;
+text-align:center;
+position:relative;
+overflow:hidden;
+margin-top:15px;
+}
+
+.profile::before{
+content:'';
+position:absolute;
+top:-80px;
+left:50%;
+transform:translateX(-50%);
+width:220px;
+height:220px;
+background:#8b5cf6;
+filter:blur(90px);
+opacity:.18;
+border-radius:50%;
+}
+
+.profile img{
+width:95px;
+height:95px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #8b5cf6;
+margin-top:25px;
+display:block;
+margin-left:auto;
+margin-right:auto;
+box-shadow:
+0 0 25px #8b5cf680,
+0 0 50px #8b5cf640;
+}
+
+.profile h3{
+margin-top:16px;
+font-size:26px;
+font-weight:700;
+}
+
+.profile p{
+font-size:14px;
+opacity:.75;
+margin-top:5px;
+}
+
+/* MENU */
+.menu-box{
+margin-top:20px;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.menu-box button{
+padding:14px;
+border:none;
+border-radius:16px;
+cursor:pointer;
+font-weight:600;
+font-size:15px;
+background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+color:white;
+transition:.3s;
+}
+
+.menu-box button:hover{
+transform:translateY(-3px);
+}
+
+/* BOX */
+.login-box{
+margin-top:18px;
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,.05);
+border:1px solid #ffffff10;
+animation:show .3s ease;
+display:none;
+}
+
+input,
+textarea{
+width:100%;
+padding:14px;
+margin-top:10px;
+border:none;
+outline:none;
+border-radius:14px;
+background:#111827;
+color:white;
+font-size:14px;
+}
+
+textarea{
+height:120px;
+resize:none;
+}
+
+.save-btn,
+.download-btn{
+width:100%;
+margin-top:12px;
+padding:15px;
+border:none;
+border-radius:16px;
+font-weight:700;
+cursor:pointer;
+background:linear-gradient(135deg,#8b5cf6,#06b6d4,#22c55e);
+color:white;
+}
+
+/* HERO */
+.hero{
+padding:70px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-size:44px;
+line-height:1.2;
+}
+
+.gradient{
+background:linear-gradient(135deg,#8b5cf6,#06b6d4,#22c55e);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero p{
+margin-top:12px;
+opacity:.7;
+font-size:15px;
+}
+
+/* STATS */
+.stats{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:25px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+min-width:120px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.05);
+border:1px solid #ffffff10;
+}
+
+.stat-box h2{
+font-size:28px;
+background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.box{
+margin:35px auto;
+max-width:760px;
+padding:28px;
+border-radius:26px;
+background:rgba(17,24,39,.65);
+backdrop-filter:blur(15px);
+border:1px solid #ffffff10;
+}
+
+.main-input{
+width:100%;
+padding:18px;
+border:none;
+outline:none;
+border-radius:18px;
+background:#111827;
+color:white;
+font-size:15px;
+}
+
+.copy-btn{
+width:100%;
+margin-top:10px;
+padding:14px;
+border:none;
+border-radius:16px;
+background:#111827;
+color:white;
+cursor:pointer;
+border:1px solid #ffffff10;
+}
+
+.tiktok-brand{
+margin-top:30px;
+padding:25px;
+border-radius:22px;
+background:rgba(255,255,255,.04);
+border:1px solid #ffffff10;
+text-align:center;
+}
+
+.tiktok-brand img{
+width:90px;
+height:90px;
+object-fit:contain;
+animation:float 3s infinite;
+}
+
+@keyframes float{
+50%{
+transform:translateY(-8px);
+}
+}
+
+.features{
+margin-top:22px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+}
+
+.feature-card{
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,.04);
+border:1px solid #ffffff10;
+}
+
+.result{
+margin-top:20px;
+}
+
+.card{
+padding:20px;
+border-radius:20px;
+background:#0f172a;
+border:1px solid #ffffff10;
+animation:show .4s ease;
+}
+
+video{
+width:100%;
+border-radius:18px;
+margin-top:15px;
+}
+
+.links{
+display:flex;
+gap:12px;
+margin-top:15px;
+}
+
+.links a{
+flex:1;
+padding:13px;
+border-radius:14px;
+text-decoration:none;
+text-align:center;
+font-weight:700;
+color:white;
+}
+
+.video-btn{
+background:#8b5cf6;
+}
+
+/* PROGRESS */
+.progress-box{
+margin-top:15px;
+margin-bottom:18px;
+}
+
+.progress-bar{
+width:100%;
+height:12px;
+background:#111827;
+border-radius:999px;
+overflow:hidden;
+border:1px solid #ffffff10;
+}
+
+.progress-fill{
+width:0%;
+height:100%;
+background:linear-gradient(
+90deg,
+#8b5cf6,
+#06b6d4,
+#22c55e
+);
+border-radius:999px;
+transition:.3s;
+box-shadow:
+0 0 20px #8b5cf680;
+}
+
+.loader{
+display:none;
+margin-top:20px;
+}
+
+.loader.active{
+display:block;
+}
+
+.loading{
+width:50px;
+height:50px;
+border:4px solid #ffffff20;
+border-top:4px solid #8b5cf6;
+border-radius:50%;
+margin:auto;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+.footer{
+margin-top:70px;
+padding:35px 20px;
+text-align:center;
+border-top:1px solid #ffffff10;
+background:rgba(255,255,255,.03);
+}
+
+.footer-links{
+margin-top:18px;
+display:flex;
+justify-content:center;
+gap:18px;
+}
+
+.footer-links a{
+color:#8b5cf6;
+text-decoration:none;
+}
+
+@keyframes show{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:34px;
+}
+
+.sidebar{
+width:100%;
+right:-100%;
+}
+
+.links{
+flex-direction:column;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="blur"></div>
+<div class="blur2"></div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+<div class="profile">
+
+<img
+id="profileImage"
+src="https://files.catbox.moe/m61cfy.jpg"
+>
+
+<h3 id="creatorName">
+Vnxz Official
+</h3>
+
+<p>
+Premium TikTok Downloader
+</p>
+
+</div>
+
+<div class="menu-box">
+
+<button onclick="openAdminLogin()">
+🔐 Admin Dashboard
+</button>
+
+<button onclick="toggleBox('aboutBox')">
+ℹ️ About Downloader
+</button>
+
+<button onclick="toggleBox('rulesBox')">
+📜 Rules
+</button>
+
+<button onclick="toggleBox('faqBox')">
+❓ FAQ
+</button>
+
+<button onclick="toggleBox('apiBox')">
+🌐 API Status
+</button>
+
+<button onclick="toggleBox('shareBox')">
+📤 Share Website
+</button>
+
+</div>
+
+<!-- ABOUT -->
+<div class="login-box" id="aboutBox">
+
+<h3>ℹ️ About Downloader</h3>
+
+<<p id="aboutText"
+style="margin-top:12px;line-height:1.8;font-size:13px;opacity:.8;">
+
+Vnxz TikTok Downloader adalah alat berbasis web untuk mengunduh video TikTok tanpa watermark dengan kualitas HD.<br><br>
+
+Platform ini dirancang agar cepat, ringan, dan mudah digunakan di semua perangkat, baik mobile maupun desktop.<br><br>
+
+Fitur utama:<br>
+• Download tanpa watermark<br>
+• Kualitas video HD<br>
+• Proses cepat dan sederhana<br>
+• Tampilan modern dan responsif
+
+</p>
+
+</div>
+
+<!-- RULES -->
+<div class="login-box" id="rulesBox">
+
+<h3>📜 Rules</h3>
+
+<p id="rulesText"
+style="margin-top:12px;line-height:1.8;font-size:13px;opacity:.8;">
+
+1. Gunakan downloader ini untuk konten pribadi atau edukasi.<br>
+2. Dilarang melakukan spam request secara berlebihan.<br>
+3. Jangan menggunakan untuk re-upload konten tanpa izin pemilik asli.<br>
+4. Server bisa mengalami limit jika terlalu banyak request.<br>
+5. Semua penggunaan adalah tanggung jawab pengguna.
+
+</p>
+
+</div>
+
+<!-- FAQ -->
+<div class="login-box" id="faqBox">
+
+<h3>❓ FAQ</h3>
+
+<p style="margin-top:12px;line-height:1.8;font-size:13px;opacity:.8;">
+  
+  ❓ Kenapa video tidak bisa didownload?<br>
+  → Biasanya karena link tidak valid atau API sedang error.<br><br>
+  
+  ❓ Apakah layanan ini gratis?<br>
+  → Ya, 100% gratis untuk semua pengguna.<br><br>
+  
+  ❓ Apakah support tanpa watermark?<br>
+  → Ya, video diambil tanpa watermark.<br><br>
+  
+  ❓ Apakah bisa download audio?<br>
+  → Tidak (atau: bisa jika fitur tersedia di update berikutnya).<br><br>
+  
+  ❓ Kenapa proses lama?<br>
+  → Tergantung server API dan koneksi internet.
+  
+</p>
+
+</div>
+
+<!-- API -->
+<div class="login-box" id="apiBox">
+
+<h3>🌐 API Status</h3>
+
+<p id="apiStatusText"
+style="margin-top:12px;line-height:1.8;font-size:13px;opacity:.8;">
+Klik tombol untuk cek API.
+</p>
+
+<button class="save-btn" onclick="checkApiStatus()">
+Check API
+</button>
+
+</div>
+
+<!-- SHARE -->
+<div class="login-box" id="shareBox">
+
+<h3>📤 Share Website</h3>
+
+<p style="margin-top:12px;line-height:1.8;font-size:13px;opacity:.8;">
+Bagikan website ini ke teman kamu.
+</p>
+
+<button class="save-btn" onclick="shareWebsite()">
+Copy Link
+</button>
+
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="login-box" id="adminLoginBox">
+
+<h3>🔐 Admin Verification</h3>
+
+<input
+type="password"
+id="adminPass"
+placeholder="Enter Admin Password"
+>
+
+<button class="save-btn" onclick="loginAdmin()">
+Login Admin
+</button>
+
+</div>
+
+<!-- ADMIN -->
+<div class="login-box" id="adminBox">
+
+<h3>⚙️ Admin Dashboard</h3>
+
+<input
+type="text"
+id="apiInput"
+placeholder="API URL"
+value="https://api.ikyyxd.my.id/download/tiktokkv2?url="
+>
+
+<input
+type="text"
+id="profileInput"
+placeholder="Profile Image URL"
+>
+
+<input
+type="text"
+id="creatorInput"
+placeholder="Creator Username"
+>
+
+<textarea
+id="rulesInput"
+placeholder="Set Rules"></textarea>
+
+<textarea
+id="aboutInput"
+placeholder="Set About Downloader"></textarea>
+
+<button class="save-btn" onclick="saveSettings()">
+💾 Save Settings
+</button>
+
+<button class="save-btn" onclick="clearCache()">
+🧹 Clear Cache
+</button>
+
+</div>
+
+</div>
+
+<!-- NAVBAR -->
+<div class="nav">
+
+<div class="logo">
+Vnxz<span>Tiktok</span>
+</div>
+
+<button class="menu-btn" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+<h1>
+Download TikTok
+<span class="gradient">
+No Watermark
+</span>
+</h1>
+
+<p>
+Fast Download • HD Quality
+</p>
+
+<div class="stats">
+
+<div class="stat-box">
+<h2>1M+</h2>
+<p>Downloads</p>
+</div>
+
+<div class="stat-box">
+<h2>99%</h2>
+<p>Success</p>
+</div>
+
+<div class="stat-box">
+<h2>HD</h2>
+<p>Quality</p>
+</div>
+
+</div>
+
+<!-- MAIN -->
+<div class="box">
+
+<input
+type="text"
+id="url"
+class="main-input"
+placeholder="Paste TikTok link here..."
+>
+
+<button class="download-btn" onclick="downloadVideo()">
+Download Now
+</button>
+
+<button class="copy-btn" onclick="copyLink()">
+📋 Copy Link
+</button>
+
+<div class="tiktok-brand">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"
+>
+
+<h3 style="margin-top:15px;">
+TikTok Video Downloader
+</h3>
+
+<p style="margin-top:10px;opacity:.75;line-height:1.8;font-size:14px;">
+Download video TikTok tanpa watermark dengan kualitas HD.
+</p>
+
+</div>
+
+<div class="features">
+
+<div class="feature-card">
+<h4>Fast Download</h4>
+<p>Download super cepat.</p>
+</div>
+
+<div class="feature-card">
+<h4>HD Quality</h4>
+<p>Video tetap jernih.</p>
+</div>
+
+ <div class="feature-card">
+<h4>Premium UI</h4>
+<p>Tampilan modern dan smooth.</p>
+</div>
+
+ <div class="feature-card">
+<h4>Developer</h4>
+<p>VinxzOfficial.</p>
+</div>
+
+</div>
+
+<div class="loader" id="loader">
+<div class="loading"></div>
+</div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+<h3>Vnxz TikTok Downloader</h3>
+
+<p style="margin-top:8px;opacity:.7;">
+Fast download without watermark.
+</p>
+
+<div class="footer-links">
+<a href="#">Privacy</a>
+<a href="#">Terms</a>
+<a href="#">Support</a>
+</div>
+
+</footer>
+
+<script>
+
+let isAdmin = false;
+
+let apiUrl =
+localStorage.getItem("apiUrl") ||
+"https://api.ikyyxd.my.id/download/tiktokkv2?url=";
+
+/* LOAD DATA */
+window.onload = () => {
+
+const savedProfile =
+localStorage.getItem("profilePhoto");
+
+const savedName =
+localStorage.getItem("creatorName");
+
+const savedRules =
+localStorage.getItem("rulesText");
+
+const savedAbout =
+localStorage.getItem("aboutText");
+
+if(savedProfile){
+
+document
+.getElementById("profileImage")
+.src = savedProfile;
+
+}
+
+if(savedName){
+
+document
+.getElementById("creatorName")
+.innerText = savedName;
+
+}
+
+if(savedRules){
+
+document
+.getElementById("rulesText")
+.innerHTML =
+savedRules.replace(/\n/g,"<br>");
+
+}
+
+if(savedAbout){
+
+document
+.getElementById("aboutText")
+.innerHTML =
+savedAbout.replace(/\n/g,"<br>");
+
+}
+
+}
+
+/* MENU */
+function toggleMenu(){
+
+document
+.getElementById("sidebar")
+.classList.toggle("active");
+
+document
+.getElementById("overlay")
+.classList.toggle("active");
+
+}
+
+/* TOGGLE BOX */
+function toggleBox(id){
+
+const allBoxes = [
+
+"adminBox",
+"adminLoginBox",
+"aboutBox",
+"rulesBox",
+"faqBox",
+"apiBox",
+"shareBox"
+
+];
+
+allBoxes.forEach(boxId => {
+
+if(boxId !== id){
+
+document
+.getElementById(boxId)
+.style.display = "none";
+
+}
+
+});
+
+const target =
+document.getElementById(id);
+
+target.style.display =
+target.style.display === "block"
+? "none"
+: "block";
+
+}
+
+/* OPEN ADMIN */
+function openAdminLogin(){
+
+toggleBox("adminLoginBox");
+
+}
+
+/* LOGIN */
+function loginAdmin(){
+
+const pass =
+document.getElementById("adminPass").value;
+
+if(pass === "vnxz123"){
+
+isAdmin = true;
+
+alert("Admin Login Success!");
+
+document
+.getElementById("adminLoginBox")
+.style.display = "none";
+
+document
+.getElementById("adminBox")
+.style.display = "block";
+
+}else{
+
+alert("Password Salah!");
+
+}
+
+}
+
+/* SAVE SETTINGS */
+function saveSettings(){
+
+if(!isAdmin){
+
+alert("Hanya admin!");
+
+return;
+
+}
+
+const api =
+document.getElementById("apiInput").value;
+
+const profile =
+document.getElementById("profileInput").value;
+
+const creator =
+document.getElementById("creatorInput").value;
+
+const rules =
+document.getElementById("rulesInput").value;
+
+const about =
+document.getElementById("aboutInput").value;
+
+localStorage.setItem("apiUrl",api);
+apiUrl = api;
+
+if(profile){
+
+localStorage.setItem("profilePhoto",profile);
+
+document
+.getElementById("profileImage")
+.src = profile;
+
+}
+
+if(creator){
+
+localStorage.setItem("creatorName",creator);
+
+document
+.getElementById("creatorName")
+.innerText = creator;
+
+}
+
+localStorage.setItem("rulesText",rules);
+
+document
+.getElementById("rulesText")
+.innerHTML =
+rules.replace(/\n/g,"<br>");
+
+localStorage.setItem("aboutText",about);
+
+document
+.getElementById("aboutText")
+.innerHTML =
+about.replace(/\n/g,"<br>");
+
+alert("Settings Saved!");
+
+}
+
+/* API CHECK */
+async function checkApiStatus(){
+
+const text =
+document.getElementById("apiStatusText");
+
+try{
+
+await fetch(apiUrl);
+
+text.innerHTML =
+"✅ API Online";
+
+}catch{
+
+text.innerHTML =
+"❌ API Offline";
+
+}
+
+}
+
+/* SHARE */
+function shareWebsite(){
+
+navigator.clipboard.writeText(
+window.location.href
+);
+
+alert("Link copied!");
+
+}
+
+/* CLEAR CACHE */
+function clearCache(){
+
+if(!isAdmin){
+
+alert("Hanya admin!");
+return;
+
+}
+
+localStorage.clear();
+
+alert("Cache berhasil dihapus!");
+
+location.reload();
+
+}
+
+/* COPY */
+function copyLink(){
+
+const url =
+document.getElementById("url");
+
+url.select();
+
+document.execCommand("copy");
+
+alert("Link copied!");
+
+}
+
+/* DOWNLOAD */
+async function downloadVideo(){
+
+const url =
+document.getElementById("url").value;
+
+const result =
+document.getElementById("result");
+
+const loader =
+document.getElementById("loader");
+
+if(!url){
+
+alert("Masukkan link TikTok!");
+return;
+
+}
+
+loader.classList.add("active");
+
+result.innerHTML = "";
+
+try{
+
+const res = await fetch(
+apiUrl +
+encodeURIComponent(url)
+);
+
+const data = await res.json();
+
+loader.classList.remove("active");
+
+result.innerHTML = `
+
+<div class="card">
+
+<h3>
+${data.result.title || "TikTok Video"}
+</h3>
+
+<!-- PROGRESS -->
+<div class="progress-box">
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+
+<p id="progressText"
+style="margin-top:10px;font-size:13px;opacity:.7;">
+Preparing download...
+</p>
+
+</div>
+
+<video controls autoplay>
+<source src="${data.result.video[0]}">
+</video>
+
+<div class="links">
+
+<a
+class="video-btn"
+href="${data.result.video[0]}"
+download="tiktok-video.mp4"
+id="autoDownloadVideo">
+🎥 Download Video
+</a>
+
+</div>
+
+</div>
+
+`;
+
+let progress = 0;
+
+const progressFill =
+document.getElementById("progressFill");
+
+const progressText =
+document.getElementById("progressText");
+
+const interval = setInterval(() => {
+
+progress += 10;
+
+progressFill.style.width =
+progress + "%";
+
+progressText.innerHTML =
+"Downloading... " + progress + "%";
+
+if(progress >= 100){
+
+clearInterval(interval);
+
+progressText.innerHTML =
+"✅ Download Complete";
+
+document
+.getElementById("autoDownloadVideo")
+.click();
+
+}
+
+},300);
+
+}catch(e){
+
+loader.classList.remove("active");
+
+result.innerHTML = `
+
+<div class="card">
+
+<h3 style="color:#ef4444;">
+Failed download video!
+</h3>
+
+<p style="margin-top:10px;opacity:.7;">
+API error atau link tidak valid.
+</p>
+
+</div>
+
+`;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
